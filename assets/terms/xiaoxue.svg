@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 512" fill="none" stroke="#4a3f33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 小雪：一间人字顶屋子的剪影，屋脊上方飘着雪点 -->
+  <path d="M341 308L648 202 955 308Z" fill="#4d7796" fill-opacity="0.12"/>
+  <circle cx="648" cy="176" r="5" fill="#4a3f33" stroke="none"/>
+  <circle cx="570" cy="200" r="5" fill="#4a3f33" stroke="none"/>
+  <circle cx="726" cy="200" r="5" fill="#4a3f33" stroke="none"/>
+  <circle cx="492" cy="226" r="5" fill="#4a3f33" stroke="none"/>
+  <circle cx="804" cy="226" r="5" fill="#4a3f33" stroke="none"/>
+  <circle cx="414" cy="252" r="5" fill="#4a3f33" stroke="none"/>
+  <circle cx="882" cy="252" r="5" fill="#4a3f33" stroke="none"/>
+</svg>

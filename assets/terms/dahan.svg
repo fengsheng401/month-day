@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 512" fill="none" stroke="#4a3f33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 大寒：冰面上横向炸开的裂纹网，右下角一小簇火苗 -->
+  <path d="M341 228L456 242 570 226 692 246 810 230 955 222"/>
+  <path d="M341 302L470 288 602 308 738 290 840 302"/>
+  <path d="M456 242L470 288"/>
+  <path d="M692 246L668 302"/>
+  <path d="M810 230L826 296"/>
+  <path d="M570 226L540 178"/>
+  <path d="M570 226L610 186"/>
+  <path d="M570 226L602 308"/>
+  <path d="M738 290L762 336"/>
+  <path d="M470 288L442 336"/>
+  <path d="M810 230L862 190"/>
+  <path d="M880 304C872 290 876 276 886 266C884 278 888 284 894 288C892 274 896 256 906 242C908 260 916 268 922 278C930 292 920 306 904 308C894 309 886 308 880 304Z"/>
+  <path d="M906 270C912 282 918 288 916 296C914 303 902 304 899 297C896 289 900 278 906 270Z" fill="#b0561f" fill-opacity="0.12"/>
+  <circle cx="866" cy="262" r="4" fill="#4a3f33" stroke="none"/>
+  <circle cx="944" cy="268" r="3.5" fill="#4a3f33" stroke="none"/>
+</svg>

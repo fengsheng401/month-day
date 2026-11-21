@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 512" fill="none" stroke="#4a3f33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 谷雨：一朵三层半圆叠瓣的牡丹，四道斜雨线分列在花的左右两侧 -->
+  <circle cx="700" cy="256" r="52" fill="#b0561f" fill-opacity="0.12" stroke="none"/>
+  <path d="M683 219A17 17 0 0 1 717 219Z"/>
+  <path d="M683 219A17 17 0 0 1 717 219Z" transform="rotate(45 700 256)"/>
+  <path d="M683 219A17 17 0 0 1 717 219Z" transform="rotate(90 700 256)"/>
+  <path d="M683 219A17 17 0 0 1 717 219Z" transform="rotate(135 700 256)"/>
+  <path d="M683 219A17 17 0 0 1 717 219Z" transform="rotate(180 700 256)"/>
+  <path d="M683 219A17 17 0 0 1 717 219Z" transform="rotate(225 700 256)"/>
+  <path d="M683 219A17 17 0 0 1 717 219Z" transform="rotate(270 700 256)"/>
+  <path d="M683 219A17 17 0 0 1 717 219Z" transform="rotate(315 700 256)"/>
+  <path d="M686 236A14 14 0 0 1 714 236Z" transform="rotate(30 700 256)"/>
+  <path d="M686 236A14 14 0 0 1 714 236Z" transform="rotate(90 700 256)"/>
+  <path d="M686 236A14 14 0 0 1 714 236Z" transform="rotate(150 700 256)"/>
+  <path d="M686 236A14 14 0 0 1 714 236Z" transform="rotate(210 700 256)"/>
+  <path d="M686 236A14 14 0 0 1 714 236Z" transform="rotate(270 700 256)"/>
+  <path d="M686 236A14 14 0 0 1 714 236Z" transform="rotate(330 700 256)"/>
+  <circle cx="700" cy="256" r="14"/>
+  <circle cx="700" cy="256" r="4" fill="#4a3f33" stroke="none"/>
+  <path d="M341 162L409 294M560 160L628 292M770 160L838 292M887 168L955 300"/>
+</svg>

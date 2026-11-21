@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 512" fill="none" stroke="#4a3f33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 夏至：一轮正圆太阳压着一道横贯画面的长影线，右下浮着一片缺口荷叶 -->
+  <circle cx="470" cy="256" r="52" fill="#a8701a" fill-opacity="0.12"/>
+  <path d="M341 306H955"/>
+  <path d="M830 266L717 280A120 40 0 1 0 717 252Z"/>
+  <path d="M830 266L799 227M830 266L861 227M830 266L915 238M830 266L946 276M830 266L861 305M830 266L799 305"/>
+</svg>

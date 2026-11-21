@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<!-- 没有这行，手机会按 980px 虚拟宽度排版，360px 屏上必然横向滚动 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>中文日历</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="cal">
+
+  <header class="cal-bar">
+    <button type="button" class="btn" id="prev-month">&lsaquo; 上一月</button>
+    <h1 class="cal-title-wrap">
+      <button type="button" class="cal-title" id="month-title" aria-haspopup="true" aria-expanded="false"></button>
+      <div class="picker" id="picker" hidden></div>
+    </h1>
+    <button type="button" class="btn" id="next-month">下一月 &rsaquo;</button>
+    <button type="button" class="btn btn-plain" id="go-today">今天</button>
+  </header>
+
+  <div class="term-banner" id="term-banner" hidden></div>
+
+  <div class="cal-week">
+    <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+  </div>
+
+  <div class="cal-grid" id="grid"></div>
+
+  <section class="cal-detail" id="detail"></section>
+
+</main>
+
+<script src="vendor/chinese-days.min.js"></script>
+<script src="calendar.js"></script>
+<script src="storage.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

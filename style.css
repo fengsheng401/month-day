@@ -1,0 +1,536 @@
+/* 暖色纸历配色：米白底 + 浅褐分隔，节日红与节气绿两套色互不混用。 */
+
+:root {
+  --bg: #f4eee2;
+  --panel: #fffaf1;
+  --line: #e2d6c2;
+  --ink: #4a3f33;
+  --ink-weak: #8c7c66;
+  --accent: #8b6b3f;
+  --off-bg: #fbe9e5;
+  --red: #b3261e;
+  --green: #2e7d4f;
+  --makeup: #6b5844;
+  /* --page-bg 先兜在原纸色上：data-season 是 app.js 运行中才写上的，
+     在那之前页面得是原来的暖纸色，不能露出浏览器默认白板。 */
+  --page-bg: var(--bg);
+  /* 季节装饰线稿的主色，先兜在 --accent 上：SVG 是 app.js 插进顶栏的，
+     插上时 data-season 也已经写好了，这条只在两者都没跑的极端帧里保证线条不是黑色硬伤。 */
+  --season-accent: var(--accent);
+  /* 纸纹：feTurbulence 生分形噪声，再用 saturate=0 洗成灰，160×160 无缝平铺。
+     不透明度写在 SVG 内部的 rect 上（opacity='0.04'）而不是给 body 加 opacity：
+     body 的 opacity 会把整页内容一起变淡，噪点必须只待在自己那一层。
+     这是 data URI，浏览器不会为它发任何请求，xmlns 那条是 XML 命名空间常量、不是外链。 */
+  --paper-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23p)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* 季节底色只换页面最外层这一层，四组值全压在低饱和高明度区间：
+   卡片、格子、详情区、面板继续走 --panel 和 --line，换季不能连带改掉上层配色；
+   星期表头是全页唯一直接坐在页面底色上的文字，所以四个值与原 #f4eee2 的亮度差控制在一档内。 */
+body[data-season="spring"] {
+  --page-bg: #e6efdf;
+  --season-accent: #5c8a41;
+}
+
+body[data-season="summer"] {
+  --page-bg: #f5f0e3;
+  --season-accent: #a8701a;
+}
+
+body[data-season="autumn"] {
+  --page-bg: #f7e7d2;
+  --season-accent: #b0561f;
+}
+
+body[data-season="winter"] {
+  --page-bg: #e4eaf1;
+  --season-accent: #4d7796;
+}
+
+/* 全局 border-box：360px 下 padding 不再往外撑宽度，这是不出现横向滚动的关键 */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* 颜色走变量而不写死：翻月只需要换 body 的 data-season，配什么色归样式表说 */
+  background-color: var(--page-bg);
+  /* 噪点是叠在季节底色之上的第二层：background-color 与 background-image 本来就是两层，
+     季节换色继续走 color 那条 220ms 过渡，纹理这层不动、不参与过渡。 */
+  background-image: var(--paper-noise);
+  /* 只给背景色一条属性加过渡，且压到 220ms：翻月时底色淡入而不是硬切；
+     不给别的属性加，格子选中、面板开合这些状态仍要求即时响应。 */
+  transition: background-color 220ms ease-out;
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei",
+    "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  overflow-x: hidden;
+}
+
+/* 容器先铺满再用 max-width 封顶：小屏跟着屏宽走，大屏停在 1000px 居中，不在 1920 下摊成空壳 */
+.cal {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 12px 16px 20px;
+}
+
+.cal-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  /* 360 视口下顶栏宽度不够，「今天」被折到第二行（实测 .cal-bar 高 70px，单行是 32px）。
+     算账：容器左右各 16px 内边距后只剩 328px；上一月 69 + 下一月 69 + 今天 48 + 标题「2026 年 12 月 ▾」约 132，
+     再加 3 个 6px 间距 = 336px，超出约 8px。下面三处合起来收回约 18px，实测回到 32px 单行：
+     1) 这里的 gap 6px→4px（收回 6px）；
+     2) .cal-title 的 letter-spacing 1px→0（11 个字符，收回约 12px）；
+     3) .cal-title-wrap 的 flex 基准 auto→80px 并给 .cal-title 加 white-space:nowrap
+        （换行判定用基准宽而不是 132px 的内容宽，同时标题自己不会断成两行）。
+     宽屏看不出差别，因为 grow 会把剩余空间全给标题。 */
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+/* 标题外包一层，面板才能以它为锚点绝对定位 */
+.cal-title-wrap {
+  position: relative;
+  /* 基准 80px 而不是 auto：理由见 .cal-bar 上面那段账 */
+  flex: 1 1 80px;
+  min-width: 96px;
+  margin: 0;
+  /* 标题字号跟着公历日的这组 clamp 走，三角和面板定位都按它算 */
+  font-size: clamp(17px, 2vw, 30px);
+}
+
+.cal-title {
+  width: 100%;
+  padding: 2px 4px;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  font-size: clamp(17px, 2vw, 30px);
+  /* 衬线只给"标题 + 公历日数字"这两处，农历小字、按钮、详情正文、面板全部留在无衬线：
+     层次是靠两类字混排出来的，统一换成衬线就等于没有层次。
+     写在 font:inherit 之后是必须的——shorthand 会把 family 一起重置回继承的无衬线栈。
+     汉字直接落到宋体一档，Georgia 没有中文字形，这条栈不需要外部字体文件。 */
+  font-family: Georgia, "Songti SC", "SimSun", serif;
+  /* 字距归零，收回 360 顶栏那约 12px，见 .cal-bar 的账；数字和汉字之间本来靠空格分开，不靠字距撑开 */
+  letter-spacing: 0;
+  text-align: center;
+  /* 不换行：宁可这一项被压缩，也不让标题在顶栏里断成两行，见 .cal-bar 的账 */
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* 标题是年月面板的唯一入口，不画个三角用户不知道能点；用伪元素生成，不新增 DOM 也不引图片 */
+.cal-title::after {
+  /* ▾ 用码点转义写：样式表没有 BOM/@charset，外部 CSS 被按非 UTF-8 解码时字符会变成乱码方块 */
+  content: '\25BE';
+  /* em 单位让三角的间距和大小都跟着标题字号走，改标题样式时不会脱节 */
+  margin-left: 0.25em;
+  font-size: 0.85em;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-weak);
+}
+
+.btn {
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--panel);
+  color: var(--ink);
+  font: inherit;
+  /* 13px 是 360 下顶栏宽度预算的基准，下限不能低于它；上限 17px 跟详情正文同档 */
+  font-size: clamp(13px, 1.1vw, 17px);
+  cursor: pointer;
+}
+
+.btn:disabled {
+  color: var(--ink-weak);
+  background: #ece4d6;
+  cursor: default;
+}
+
+.btn-plain {
+  margin-left: auto;
+}
+
+/* 季节线稿是纯装饰，pointer-events 关掉后它不参与命中测试，底下和旁边的点击照常落到按钮上。
+   32px 是需求给的尺寸，360 顶栏放不下时先减它、不动按钮，宽度账实测后写在这条规则上。 */
+.season-deco {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  /* gap 只管到 4px，装饰和「今天」挨太近会被读成按钮的一部分；这 4px 加到 gap 之上，
+     让图标与按钮之间稳定留出 8px。 */
+  margin-left: 4px;
+  pointer-events: none;
+  color: var(--season-accent);
+}
+
+.season-deco svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* 四个图案画在同一个 SVG 里，靠 data-season 决定哪一组露出来：
+   换季只是 CSS 换显隐，app.js 启动时插一次 DOM，翻月不再碰结构，也就不会闪一下。 */
+.season-deco g {
+  display: none;
+}
+
+body[data-season="spring"] .deco-spring,
+body[data-season="summer"] .deco-summer,
+body[data-season="autumn"] .deco-autumn,
+body[data-season="winter"] .deco-winter {
+  display: inline;
+}
+
+/* 窄屏这一档的顶栏宽度账（360 视口，下列全部为实测值）：
+   可分配 = 360 - .cal 左右内边距 16×2 = 328。
+   一行的固定项：上一月 + 标题 + 下一月 + 今天 + 季节图标 + 4 个 gap(4px)。
+   标题「2026 年 11 月 ▾」的实测硬需求 123px：文字墨迹 110（衬线 17px，年份固定四位、月份两位，不随月变）
+   + 三角左边距 3 + 三角字形 10。字号属于第 10 轮"字体层次"里不许动的部分，三角是年月面板的唯一入口提示。
+
+   按需求原样放 32px 图标时，flex 的换行判定用「各项最小主轴尺寸之和」：
+   69 + 96(标题 min-width 下限) + 69 + 48 + 32 + 16 = 330 > 328 → 图标被整项甩到第二行，
+   实测 .cal-bar 高 68px（单行是 32px），这就是需求明确要避免的结果。
+   图标压到 24px 后单行成立（322 ≤ 328），但标题只剩 102px，比 123 少 21px，
+   多出的三角会盖到「下一月」的边框上——实测三角绘制区间 199..209、按钮左缘 207，压住 2px。
+   缺口从三处换回，全部只作用于 ≤420px，宽屏一档不动（图标仍 32px、按钮仍 10px）：
+   1) 图标 32→24；
+   2) 按钮内边距 10→6：上一月/下一月各 69→61、今天 48→40，收回 24px；
+   3) 标题自身左右内边距 4→0，收回 8px（按钮盒子是 width:100% + border-box，可点范围不受影响）。
+   最终实测：顶栏单行 32px，prev 16..77 / 标题盒 81..207 / next 211..272 / 今天 276..316 / 图标 320..344，
+   文字墨迹 83..192、三角 195..205，距「下一月」边框 6px、距按钮文字 13px，三个按钮矩形完整且各自命中测试可达，
+   scrollWidth == clientWidth == 360（把 body 的 overflow-x:hidden 摘掉复量仍是 360，不是被遮住的）。
+   按钮高度 32px、字号 13px、标题字号都没动，只收窄了左右留白——比折行或压字都划算。 */
+@media (max-width: 420px) {
+  .season-deco {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* 三个顶栏按钮同步收窄内边距，理由见上面那笔账 */
+  .btn {
+    padding: 6px 6px;
+  }
+
+  /* 标题的左右内边距让出来换成三角与按钮之间的空隙：
+     这条按钮是 width:100% + border-box，可点范围由盒子决定、与内边距无关 */
+  .cal-title {
+    padding: 2px 0;
+  }
+
+  /* 用 id 选择器而不是给 .btn 再改一轮：特异性 (1,0,0) 高于类 (0,1,0)，
+     块内那条 .btn{padding:6px 6px} 不动，只把上下一月/今天的左右内边距单独收回，
+     上下 6px 和高度、字号、圆角全跟着原样走。收回的宽度给 .season-deco 的 8px 间距和放大后的三角腾位置。 */
+  #prev-month,
+  #next-month {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  #go-today {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}
+
+.cal-week,
+.cal-grid {
+  display: grid;
+  /* minmax(0,1fr) 防止某个格子的中文长文本把整列撑宽，超宽交给下面的格内换行 */
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+}
+
+.cal-week {
+  margin-bottom: 4px;
+}
+
+.cal-week span {
+  padding: 2px 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--ink-weak);
+}
+
+.cal-grid {
+  padding: 2px;
+  background: var(--line);
+  border-radius: 4px;
+}
+
+/* 补位的空格子只占格，不参与点击；尺寸规则必须和有内容的格子完全一致，
+   否则最后一行空格会把整行拉矮，六行等高就破了 */
+.cell-blank {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: 46px;
+  max-height: 104px;
+  background: var(--panel);
+  border: none;
+}
+
+/* 高度由列宽推出来，不再用视口宽度换算：列宽只跟容器宽走，
+   所以同一视口里六行必然等高，月长从 28 变到 31 翻页也不会跳。
+   aspect-ratio 生效的前提是 height 不能被写死，只留 min/max 兜底：
+   下限 46px 防窄屏把数字挤没，上限 104px 防宽屏把格子涨成半屏高。
+   width:100% 是把宽度钉回列宽：1000px 容器下列宽 136，超过 104 上限时
+   浏览器会让比例反过来决定宽度，格子缩成 104 宽、列间露出 32px 底色空档，
+   星期表头也跟着对不上；钉住宽度后夹住的是高度，1440/1920 仍是填满的 136×104，
+   768 以下上限不生效，比例还是 1:1 */
+.cell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: 46px;
+  max-height: 104px;
+  padding: 3px 4px;
+  overflow: hidden;
+  border: none;
+  border-radius: 3px;
+  background: var(--panel);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cell-off {
+  background: var(--off-bg);
+}
+
+.cell-selected {
+  background: #efe3cd;
+}
+
+.cell-selected .cell-day {
+  font-weight: 700;
+}
+
+/* 选中态的褐色在后、会盖掉假日红底，这条同级的双类规则把假日拉回红系，选中假日格仍看得懂是休 */
+.cell-off.cell-selected {
+  background: #f6d8d2;
+}
+
+/* 今天用同色描边（outline 不占盒子尺寸，选中态叠上来也不会错位），和节日红底区分开 */
+.cell-today {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.cell:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+}
+
+.cell:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.cell-day {
+  display: block;
+  font-size: clamp(17px, 2vw, 30px);
+  line-height: 1.1;
+  /* 和月份标题同一条衬线栈，理由见 .cal-title 那段；字号字行动都没动 */
+  font-family: Georgia, "Songti SC", "SimSun", serif;
+}
+
+.cell-sub {
+  display: block;
+  margin-top: 1px;
+  font-size: clamp(11px, 1.05vw, 15px);
+  line-height: 1.2;
+  color: var(--ink-weak);
+  word-break: break-all;
+}
+
+.sub-holiday {
+  color: var(--red);
+  font-weight: 600;
+}
+
+.sub-term {
+  color: var(--green);
+}
+
+.badge {
+  position: absolute;
+  top: 2px;
+  right: 3px;
+  font-size: clamp(10px, 0.85vw, 13px);
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.badge-off {
+  color: var(--red);
+}
+
+/* 班用褐色，避免和"休"的红、节气的绿混色 */
+.badge-makeup {
+  color: var(--makeup);
+}
+
+/* 详情区正文只跟着 clamp 走一处，标题和行都继承，省得媒体查询里再留一份旧字号等着层叠生效 */
+.cal-detail {
+  margin-top: 10px;
+  padding: 8px 10px;
+  font-size: clamp(14px, 1.1vw, 17px);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+/* h2 的浏览器默认字号是 2em，不显式 inherit 就会盖掉上面的 clamp */
+.detail-title {
+  margin: 0 0 4px;
+  font-size: inherit;
+  font-weight: 600;
+}
+
+.detail-row {
+  display: flex;
+  gap: 8px;
+  padding: 1px 0;
+}
+
+/* 标签列按内容宽排，不再写死 52px：字号随 clamp 长到 17px 时，两字标签不会被固定基准挤掉 */
+.detail-label {
+  flex: 0 0 auto;
+  color: var(--ink-weak);
+}
+
+.detail-value {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.value-holiday {
+  color: var(--red);
+  font-weight: 600;
+}
+
+.value-term {
+  color: var(--green);
+  font-weight: 600;
+}
+
+.value-makeup {
+  color: var(--makeup);
+  font-weight: 600;
+}
+
+.value-note {
+  color: var(--ink-weak);
+}
+
+/* display:flex 会盖掉 hidden 属性的默认 display:none，必须显式让位 */
+.picker[hidden] {
+  display: none;
+}
+
+.picker {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 10;
+  display: flex;
+  gap: 2px;
+  padding: 4px;
+  /* 用 translateX 居中而不是 right/left 撑位，标题在顶栏中部，面板不会顶出屏幕 */
+  transform: translateX(-50%);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.picker-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow-y: auto;
+}
+
+/* 列宽交给内容自己算，年列 78px、月列 62px 都删了：条目字号升到 17px 后
+   「2100」这种四条要 67px，再加 15px 纵向滚动条，78px 的固定列宽装不下，
+   1920 下年列会多出一条横向滚动条。条目是 nowrap，列的 max-content 就是最宽那条，
+   两列各自贴合内容，窄屏不会因此变宽。
+   限高只给年列：月列 12 项按自然高度整列摊开，当前月不用滚就能看见 */
+.picker-col-year {
+  max-height: 300px;
+}
+
+/* 列头是"年/月"这种提示文字，必须一直比列内条目小一档，所以上限只给到 14px（条目上限 17px）；
+   下限 11px 保持原值，窄屏面板不跟着变挤 */
+.picker-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 2px 6px;
+  background: var(--panel);
+  color: var(--ink-weak);
+  font-size: clamp(11px, 0.95vw, 14px);
+}
+
+.picker-item {
+  flex: 0 0 auto;
+  padding: 3px 6px;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  /* 和顶栏按钮同档：条目是面板里唯一的可点文字，宽屏要跟着长，否则 30px 的日期旁边配 13px 的字 */
+  font-size: clamp(13px, 1.1vw, 17px);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.picker-item:hover {
+  background: #efe3cd;
+}
+
+.picker-current {
+  background: #e7d9c0;
+  font-weight: 600;
+}
+
+/* 日程相关样式集中收在文件末尾，保持需求给的单行写法：这 12 条是从 storage/app 的 DOM 结构
+   一一对应过来的，整块放在一起方便日后按块删，不拆进上面按元素分节的多行规则里。 */
+.cell-dot { position:absolute; right:4px; bottom:4px; width:4px; height:4px; border-radius:50%; background:var(--accent); }
+.sched { margin-top:8px; padding-top:8px; border-top:1px solid var(--line); }
+.sched-head { display:flex; align-items:baseline; gap:8px; margin-bottom:6px; }
+.sched-title { font-weight:600; }
+.sched-count { color:var(--ink-weak); font-size:0.85em; }
+.sched-item { display:flex; align-items:center; gap:8px; padding:2px 0; }
+.sched-text { flex:1 1 auto; min-width:0; word-break:break-all; }
+.sched-del { flex:0 0 auto; border:none; background:transparent; color:var(--ink-weak); font:inherit; cursor:pointer; padding:0 2px; }
+.sched-add { display:flex; gap:6px; margin-top:6px; }
+.sched-input { flex:1 1 auto; min-width:0; padding:4px 6px; border:1px solid var(--line); border-radius:4px; background:var(--panel); color:var(--ink); font:inherit; }
+.sched-foot { display:flex; gap:10px; margin-top:8px; }
+.sched-out { width:100%; margin-top:6px; min-height:80px; font:12px/1.5 monospace; border:1px solid var(--line); border-radius:4px; background:var(--panel); color:var(--ink); word-break:break-all; }
+
+.term-banner { position:relative; height:clamp(72px, 9vw, 132px); margin-bottom:8px;
+               border:1px solid var(--line); border-radius:6px; overflow:hidden;
+               background:#fdf8ef center/cover no-repeat; }
+.term-banner-text { position:absolute; left:10px; bottom:8px; }
+.term-banner-name { font-family:Georgia,"Songti SC","SimSun",serif; font-weight:600;
+                    font-size:clamp(16px,2vw,24px); letter-spacing:2px; color:var(--ink); }
+.term-banner-sub { font-size:clamp(11px,1vw,13px); color:var(--ink-weak); }

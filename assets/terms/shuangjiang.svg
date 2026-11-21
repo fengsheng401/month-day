@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 512" fill="none" stroke="#4a3f33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 霜降：一根横伸的柿枝垂着两只带蒂柿子，四周结着霜点 -->
+  <path d="M341 210C470 196 600 204 720 188 830 174 900 182 955 176"/>
+  <path d="M470 200V218M734 190C740 200 742 208 742 214"/>
+  <circle cx="470" cy="262" r="44" fill="#b0561f" fill-opacity="0.12"/>
+  <path d="M440 230a10 10 0 0 1 20 0a10 10 0 0 1 20 0a10 10 0 0 1 20 0"/>
+  <circle cx="742" cy="254" r="40"/>
+  <path d="M716 224a9 9 0 0 1 18 0a9 9 0 0 1 18 0a9 9 0 0 1 18 0"/>
+  <circle cx="392" cy="252" r="4" fill="#4a3f33" stroke="none"/>
+  <circle cx="560" cy="240" r="4.5" fill="#4a3f33" stroke="none"/>
+  <circle cx="620" cy="296" r="4" fill="#4a3f33" stroke="none"/>
+  <circle cx="820" cy="232" r="4.5" fill="#4a3f33" stroke="none"/>
+  <circle cx="906" cy="262" r="4" fill="#4a3f33" stroke="none"/>
+  <circle cx="420" cy="310" r="4" fill="#4a3f33" stroke="none"/>
+  <circle cx="665" cy="232" r="4" fill="#4a3f33" stroke="none"/>
+  <circle cx="880" cy="200" r="4.5" fill="#4a3f33" stroke="none"/>
+  <circle cx="524" cy="314" r="4" fill="#4a3f33" stroke="none"/>
+</svg>

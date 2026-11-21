@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 512" fill="none" stroke="#4a3f33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 小寒：檐口垂下三根长短不一的冰凌，右侧一枝梅开着三朵五瓣花和一个花苞 -->
+  <path d="M341 210H600"/>
+  <path d="M364 210h16l-8 60z"/>
+  <path d="M420 210h16l-8 92z" fill="#4d7796" fill-opacity="0.12"/>
+  <path d="M478 210h16l-8 44z"/>
+  <path d="M556 300C640 288 720 272 800 258 870 246 920 236 955 230"/>
+  <path d="M620 289L620 277M768 262L768 252M872 245L872 252M930 233L930 223"/>
+  <circle cx="620" cy="237" r="11"/><circle cx="634" cy="247" r="11"/><circle cx="629" cy="264" r="11"/><circle cx="611" cy="264" r="11"/><circle cx="606" cy="247" r="11"/>
+  <circle cx="620" cy="252" r="3.5" fill="#4a3f33" stroke="none"/>
+  <circle cx="768" cy="213" r="11"/><circle cx="782" cy="223" r="11"/><circle cx="777" cy="240" r="11"/><circle cx="759" cy="240" r="11"/><circle cx="754" cy="223" r="11"/>
+  <circle cx="768" cy="228" r="3.5" fill="#4a3f33" stroke="none"/>
+  <circle cx="872" cy="263" r="11"/><circle cx="886" cy="273" r="11"/><circle cx="881" cy="290" r="11"/><circle cx="863" cy="290" r="11"/><circle cx="858" cy="273" r="11"/>
+  <circle cx="872" cy="278" r="3.5" fill="#4a3f33" stroke="none"/>
+  <circle cx="930" cy="216" r="11"/>
+  <path d="M923 210l-5-6M937 210l5-6"/>
+</svg>

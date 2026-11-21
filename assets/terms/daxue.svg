@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 512" fill="none" stroke="#4a3f33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 大雪：一枝横伸的松枝，针叶成簇下垂，枝顶压着一层波浪状积雪 -->
+  <path d="M360 274C450 268 540 260 640 252 740 244 850 236 940 226Q910 190 876 232Q842 196 808 236Q774 200 740 240Q706 204 672 244Q638 208 604 248Q570 212 536 252Q502 216 468 256Q434 220 400 262Q378 244 360 274Z" fill="#4d7796" fill-opacity="0.12"/>
+  <path d="M341 280C430 274 520 268 610 262 700 256 800 246 955 228"/>
+  <path d="M395 276l-32 26M395 276l-16 38M395 276l0 42M395 276l16 38M395 276l32 26"/>
+  <path d="M480 269l-32 26M480 269l-16 38M480 269l0 42M480 269l16 38M480 269l32 26"/>
+  <path d="M565 261l-32 26M565 261l-16 38M565 261l0 42M565 261l16 38M565 261l32 26"/>
+  <path d="M650 254l-32 26M650 254l-16 38M650 254l0 42M650 254l16 38M650 254l32 26"/>
+  <path d="M735 246l-32 26M735 246l-16 38M735 246l0 42M735 246l16 38M735 246l32 26"/>
+  <path d="M820 239l-32 26M820 239l-16 38M820 239l0 42M820 239l16 38M820 239l32 26"/>
+  <path d="M905 232l-32 26M905 232l-16 38M905 232l0 42M905 232l16 38M905 232l32 26"/>
+  <circle cx="400" cy="228" r="4.5" fill="#4a3f33" stroke="none"/>
+  <circle cx="480" cy="214" r="4.5" fill="#4a3f33" stroke="none"/>
+  <circle cx="560" cy="205" r="4.5" fill="#4a3f33" stroke="none"/>
+  <circle cx="645" cy="197" r="4.5" fill="#4a3f33" stroke="none"/>
+  <circle cx="760" cy="306" r="4.5" fill="#4a3f33" stroke="none"/>
+  <circle cx="845" cy="296" r="4.5" fill="#4a3f33" stroke="none"/>
+  <circle cx="925" cy="286" r="4.5" fill="#4a3f33" stroke="none"/>
+</svg>

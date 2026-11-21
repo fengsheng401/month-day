@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 512" fill="none" stroke="#4a3f33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 立夏：一片带缺口的圆形荷叶，叶缘停着一只四翅蜻蜓 -->
+  <path d="M611 260L750 217A270 50 0 1 0 842 234Z" fill="#5c8a41" fill-opacity="0.12"/>
+  <path d="M611 260L611 310M611 260L404 292M611 260L345 251M611 260L519 212M611 260L681 212M611 260L877 251"/>
+  <g transform="translate(905 251) rotate(-35)">
+    <ellipse cx="-24" cy="0" rx="24" ry="4"/>
+    <ellipse cx="4" cy="0" rx="8" ry="5.5"/>
+    <circle cx="15" cy="0" r="4.5"/>
+    <ellipse cx="18" cy="-20" rx="22" ry="5.5" transform="rotate(-55 18 -20)"/>
+    <ellipse cx="-9" cy="-20" rx="20" ry="5" transform="rotate(55 -9 -20)"/>
+    <ellipse cx="18" cy="20" rx="22" ry="5.5" transform="rotate(55 18 20)"/>
+    <ellipse cx="-9" cy="20" rx="20" ry="5" transform="rotate(-55 -9 20)"/>
+  </g>
+</svg>

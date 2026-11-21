@@ -1,0 +1,8 @@
+/shot-*.png
+/参考图/
+/提示词*.txt
+/放宽规则-粘贴用.txt
+/说明.txt
+.env
+.env.*
+node_modules/
